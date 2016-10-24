@@ -5,7 +5,7 @@
   <title>Skills-Javascript</title>
   <style>
     body {
-      counter-reset: h3counter;
+     number-reset:  number;
       font-family: sans-serif;
     }
     input[type=button],
@@ -28,8 +28,8 @@
       margin-top: 4em;
     }
     h3:before {
-      counter-increment: h3counter;
-      content: counter(h3counter) ". ";
+     number-increment:  number;
+      content number( number) ". ";
     }
     .hint {
       border: dashed 1px black;
@@ -153,12 +153,12 @@
 
   var formButton = document.getElementById("prevent-form-submission-button");
 
-  function stop_submit(evt) {
+  function stopSubmit(evt) {
     evt.preventDefault();
     alert("Nuh uh uh!");
   }
 
-  formButton.addEventListener("click", stop_submit);
+  formButton.addEventListener("click", stopSubmit);
 
 </script>
 
@@ -245,11 +245,11 @@
 <script>
   "use strict";
   // code here for above problem
-  function pop_up_alert() {
+  function popUpAlert() {
     alert("You clicked it!1")
   }
 
-  $(".tricky-to-find").click(pop_up_alert);
+  $(".tricky-to-find").click(popUpAlert);
 
 </script>
 
@@ -279,11 +279,11 @@
 <script>
   "use strict";
   // put your code here
-  function change_to_dog() {
+  function changeToDog() {
     $("#kittenz-rule").attr("src", "http://data.whicdn.com/images/127046219/large.jpg")
   }
 
-  $("#kittenz-rule").dblclick(change_to_dog);
+  $("#kittenz-rule").dblclick(changeToDog);
 
 </script>
 
@@ -319,16 +319,16 @@
 <script>
   "use strict";
   // put your code here
-  function change_to_porcupine() {
+  function changeToPorcupine() {
 
-    function set_porcupine() {
+    function setPorcupine() {
       $("#cute-porcupine-image").fadeIn("slow").attr("style", "display: block"); 
     }
 
-    setTimeout(set_porcupine, 1000);
+    setTimeout(setPorcupine, 1000);
   }
 
-  $("#make-a-porcupine").click(change_to_porcupine);
+  $("#make-a-porcupine").click(changeToPorcupine);
 
 </script>
 
@@ -374,6 +374,16 @@
 <script>
   "use strict";
   // put your code here
+
+  function agree(evt) {
+    evt.preventDefault();
+    var favFood = $("#favorite-food-input").val();
+    var response = 'I like ' + favFood + ', too.';
+    $("#agreeable-text").html(response);
+  }
+
+  $("form").submit(agree);
+
 </script>
 
 <div class="hint">
@@ -404,6 +414,31 @@
 <script>
   "use strict";
   // put your code here
+  function guessRandNum() {
+
+    var randNum = Math.floor(Math.random()*(100))+1;
+    var guess = prompt("I'm thinking of a number between 1 and 100. Enter what you think it is here");
+
+    function checkEquality() {
+      while (guess !== randNum) {
+        if (guess > 100 || guess < 1) {
+            guess = prompt("Your guess is out of the 1 to 100 range. Please guess a number between 1 and 100");
+            continue;
+        }  else if (guess > randNum) {
+            guess = prompt("Your guess is too high. Try guessing again");
+            continue;
+        } else if (guess < randNum) {
+            guess = prompt("Your guess is too low. Try guessing again");
+            continue;
+        }
+        alert("Congratulations, you guessed the correct number, " + randNum + "!");
+        break;
+      }
+    }
+    checkEquality();
+  }
+
+  $("#play-guessing-game").click(guessRandNum);
 </script>
 
 <div class="hint">
@@ -445,6 +480,40 @@
 <script>
   "use strict";
   // put your code here
+  function enableGuess() {
+    $("#number-guessed").prop("disabled", false);
+    $("#try-this-number").prop("disabled", false);
+    $("#play-guessing-game-2").attr("disabled", true);
+    var randNum = Math.floor(Math.random()*(100))+1;
+    $("#number-guessed").val("");
+    $("#number-guessing-msg").html("I'm thinking of a number between 1 and 100. Try to guess what it is");
+
+    function checkEquality(evt) {
+      evt.preventDefault();
+      var guess = $("#number-guessed").val();
+      $("#number-guessed").val("");
+
+      if (guess > 100 || guess < 1) {
+        $("#number-guessing-msg").html("Your guess is out of the 1 to 100 range. Please guess a number between 1 and 100");
+      } else if (guess > randNum) {
+          $("#number-guessing-msg").html("Your guess is too high. Try guessing again");
+      } else if (guess < randNum) {
+          $("#number-guessing-msg").html("Your guess is too low. Try guessing again");
+      } else {
+          $("#number-guessing-msg").html("Congratulations, you guessed the correct number, " + randNum + "!");
+          $("#number-guessed").prop("disabled", true);
+          $("#try-this-number").prop("disabled", true);
+          $("#play-guessing-game-2").attr("disabled", false);
+          return;
+      }
+    }
+
+  $("form#guessing-game-2-form").submit(checkEquality);
+
+  }
+
+  $("#play-guessing-game-2").click(enableGuess);
+
 </script>
 
 
@@ -477,7 +546,36 @@
 
     var PRIME_COLORS = ['orange', 'midnightblue', 'darkgoldenrod', 'green', 'purple'];
 
-  // put the rest of your code here
+    // put the rest of your code here
+
+    var PRIME_NUMS = [];
+      for (var number = 2; number <= 12; number++) {
+
+        var notPrime = false;
+        for (var i = 2; i < number; i++) {
+          if (number % i === 0 && i !== number) {
+            notPrime = true;
+          }
+        }
+        if (notPrime === false) {
+          PRIME_NUMS.push(number);
+        }
+      }
+      // console.log(PRIME_NUMS);
+
+    function makeBoxes() {
+
+      var j = 0;
+      var k = 0;
+      for (var i=0; i<5; i++) {
+        $("#prime-box-area").append('<div class="prime-box"></div>').find("div:last").css('background-color', PRIME_COLORS[j]).html(PRIME_NUMS[k]);
+        j = (j+1) % PRIME_COLORS.length;
+        k = (k+1) % PRIME_NUMS.length;
+      }
+    }
+
+    $("#make-prime-boxes").click(makeBoxes);
+
 </script>
 
 
@@ -516,6 +614,6 @@
   setInterval(blink, 500);
 </script>
 
-<script src="js-skills.js"></script>
+<!-- <script src="js-skills.js"></script> -->
 </body>
 </html>
